@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import styles from '../css/LoginAcenis.module.css';
-import fundologin from '../images/fotologin.jpg';
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import styles from '../css/LoginAcenis.module.css'
+import fundologin from '../images/fotologin.jpg'
 
 function LoginAcenis() {
   const [showPassword, setShowPassword] = useState(false);

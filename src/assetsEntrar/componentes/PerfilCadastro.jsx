@@ -1,8 +1,8 @@
-import React from 'react';
-import styles from '../css/PerfilCadastro.module.css';
-import maeImage from '../images/mae-icon.jpg'; 
-import profissionalImage from '../images/profissional-icon.jpg';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react'
+import styles from '../css/PerfilCadastro.module.css'
+import maeImage from '../images/mae-icon.jpg' 
+import profissionalImage from '../images/profissional-icon.jpg'
+import { Link, useNavigate } from 'react-router-dom'
 
 function PerfilCadastro() {
   return (

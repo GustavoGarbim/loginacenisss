@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-  overflow-y: auto; /* 👈 Ativa a rolagem no lado direito */
+  overflow-y: auto; 
 }
 
 .rightSection::-webkit-scrollbar {
@@ -180,7 +180,7 @@
   text-decoration: underline;
 }
 
-/* RESPONSIVO */
+
 @media (max-width: 1024px) {
   .logoAc,
   .logoEnis {

@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styles from '../css/CadastroMae.module.css';
-import fundocadastro from '../images/fundomae.png';
-import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import styles from '../css/CadastroMae.module.css'
+import fundocadastro from '../images/fundomae.png'
+import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { Link, useNavigate } from 'react-router-dom'
 
 function CadastroMae() {
   const [showPassword, setShowPassword] = useState(false);
