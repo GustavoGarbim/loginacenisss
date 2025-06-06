@@ -8,27 +8,22 @@ import { Link, useNavigate } from 'react-router-dom'
 function CadastroMae() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
-    senha: '',
-    confirmarSenha: '',
-  });
+   const [formData, setFormData] = useState({
+       nome: '',
+       email: '',
+       senha: '',
+       confirmarSenha: '',
+       tipo: 'Responsáveis'
+     });
+   
+     const handleChange = (e) => {
+       setFormData({...formData, [e.target.name]: e.target.value});
+     };
+   
+     const handleSubmit = async (e) => {
+       e.preventDefault();
 
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-
+       
     if (!formData.nome || !formData.email || !formData.senha || !formData.confirmarSenha) {
       alert('Por favor, preencha todos os campos.');
       return;
@@ -38,13 +33,23 @@ function CadastroMae() {
       alert('As senhas não coincidem.');
       return;
     }
-
-
-    console.log('Dados enviados:', formData);
-
-
-    navigate('/login');
-  };
+    
+       try {
+         const res = await fetch('http://localhost:8081/usuariosProfissional', {
+           method: 'POST',
+           headers: {'Content-Type': 'application/json'},
+           body: JSON.stringify(formData),
+         });
+         if(res.ok) {
+           alert('Cadastro realizado com sucesso!');
+           setFormData({nome: '', email: '', senha: '', confirmarSenha: '', responsavel: 'Responsáveis'});
+         } else {
+           alert('Erro no cadastro.');
+         }
+       } catch (error) {
+         alert('Erro na conexão com a API.');
+       }
+     };
 
   return (
     <div className={styles.paginaCadastro}>

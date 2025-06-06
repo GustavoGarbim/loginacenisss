@@ -7,44 +7,48 @@ import { Link, useNavigate } from 'react-router-dom'
 function CadastroProfissional() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [formData, setFormData] = useState({
+   const [formData, setFormData] = useState({
     nome: '',
     email: '',
     senha: '',
     confirmarSenha: '',
     profissao: '',
-    registro: ''
+    registro: '',
+    tipo: 'Profissional'
   });
 
-  const navigate = useNavigate();
-
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
+    setFormData({...formData, [e.target.name]: e.target.value});
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-    const { nome, email, senha, confirmarSenha, profissao, registro } = formData;
-
-    if (!nome || !email || !senha || !confirmarSenha || !profissao || !registro) {
+    if (!formData.nome || !formData.email || !formData.senha || !formData.confirmarSenha) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    if (senha !== confirmarSenha) {
+    if (formData.senha !== formData.confirmarSenha) {
       alert('As senhas não coincidem.');
       return;
     }
-
-    console.log('Dados enviados:', formData);
-    alert('Conta de profissional criada com sucesso!');
-    navigate('/login');
+    
+    try {
+      const res = await fetch('http://localhost:8081/usuariosProfissional', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(formData),
+      });
+      if(res.ok) {
+        alert('Cadastro realizado com sucesso!');
+        setFormData({nome: '', email: '', senha: '', confirmarSenha: '', profissao: '', registro: '', respondavel: 'Profissional'});
+      } else {
+        alert('Erro no cadastro.');
+      }
+    } catch (error) {
+      alert('Erro na conexão com a API.');
+    }
   };
 
   return (
