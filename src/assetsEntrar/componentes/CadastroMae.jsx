@@ -9,11 +9,11 @@ function CadastroMae() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
    const [formData, setFormData] = useState({
-       nome: '',
-       email: '',
-       senha: '',
-       confirmarSenha: '',
-       tipo: 'Responsáveis'
+       nomeUser: '',
+       emailUser: '',
+       senhaUser: '',
+       confirmarSenhaUser: '',
+       tipoUser: 'RESPONSAVEL'
      });
    
      const handleChange = (e) => {
@@ -35,14 +35,14 @@ function CadastroMae() {
     }
     
        try {
-         const res = await fetch('http://localhost:8081/usuariosProfissional', {
+         const res = await fetch('http://localhost:8081/usuarios', {
            method: 'POST',
            headers: {'Content-Type': 'application/json'},
            body: JSON.stringify(formData),
          });
          if(res.ok) {
            alert('Cadastro realizado com sucesso!');
-           setFormData({nome: '', email: '', senha: '', confirmarSenha: '', responsavel: 'Responsáveis'});
+           setFormData({nome: '', email: '', senha: '', confirmarSenha: '', responsavel: 'RESPONSAVEL'});
          } else {
            alert('Erro no cadastro.');
          }

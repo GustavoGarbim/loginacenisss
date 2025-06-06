@@ -8,13 +8,13 @@ function CadastroProfissional() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
    const [formData, setFormData] = useState({
-    nome: '',
-    email: '',
-    senha: '',
-    confirmarSenha: '',
-    profissao: '',
-    registro: '',
-    tipo: 'Profissional'
+    nomeUser: '',
+    emailUser: '',
+    senhaUser: '',
+    confirmarSenhaUser: '',
+    profissaoUser: '',
+    registroUser: '',
+    tipoUser: 'PROFISSIONAL'
   });
 
   const handleChange = (e) => {
@@ -35,14 +35,14 @@ function CadastroProfissional() {
     }
     
     try {
-      const res = await fetch('http://localhost:8081/usuariosProfissional', {
+      const res = await fetch('http://localhost:8081/usuarios', {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(formData),
       });
       if(res.ok) {
         alert('Cadastro realizado com sucesso!');
-        setFormData({nome: '', email: '', senha: '', confirmarSenha: '', profissao: '', registro: '', respondavel: 'Profissional'});
+        setFormData({nome: '', email: '', senha: '', confirmarSenha: '', profissao: '', registro: '', respondavel: 'PROFISSIONAL'});
       } else {
         alert('Erro no cadastro.');
       }
