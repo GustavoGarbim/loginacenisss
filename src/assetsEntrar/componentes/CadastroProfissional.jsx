@@ -8,13 +8,13 @@ function CadastroProfissional() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
    const [formData, setFormData] = useState({
-    nomeUser: '',
+    nameUser: '',
     emailUser: '',
-    senhaUser: '',
+    passwordUser: '',
     confirmarSenhaUser: '',
-    profissaoUser: '',
-    registroUser: '',
-    tipoUser: 'PROFISSIONAL'
+    job: '',
+    register: '',
+    tipo: 'PROFISSIONAL'
   });
 
   const handleChange = (e) => {
@@ -24,15 +24,15 @@ function CadastroProfissional() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.nome || !formData.email || !formData.senha || !formData.confirmarSenha) {
+    if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser) {
       alert('Por favor, preencha todos os campos.');
       return;
     }
 
-    if (formData.senha !== formData.confirmarSenha) {
+    if (formData.passwordUser !== formData.confirmarSenhaUser) {
       alert('As senhas não coincidem.');
       return;
-    }
+}
     
     try {
       const res = await fetch('http://localhost:8081/usuarios', {
@@ -42,7 +42,7 @@ function CadastroProfissional() {
       });
       if(res.ok) {
         alert('Cadastro realizado com sucesso!');
-        setFormData({nome: '', email: '', senha: '', confirmarSenha: '', profissao: '', registro: '', respondavel: 'PROFISSIONAL'});
+        setFormData({nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', job: '', register: '', tipo: 'PROFISSIONAL'});
       } else {
         alert('Erro no cadastro.');
       }
@@ -86,18 +86,18 @@ function CadastroProfissional() {
             <label className={styles.label}>Nome Completo</label>
             <input
               type="text"
-              name="nome"
+              name="nameUser"
               className={styles.input}
-              value={formData.nome}
+              value={formData.nameUser}
               onChange={handleChange}
             />
 
             <label className={styles.label}>E-mail</label>
             <input
               type="email"
-              name="email"
+              name="emailUser"
               className={styles.input}
-              value={formData.email}
+              value={formData.emailUser}
               onChange={handleChange}
             />
 
@@ -105,9 +105,9 @@ function CadastroProfissional() {
             <div className={styles.passwordWrapper}>
               <input
                 type={showPassword ? 'text' : 'password'}
-                name="senha"
+                name="passwordUser"
                 className={styles.input}
-                value={formData.senha}
+                value={formData.passwordUser}
                 onChange={handleChange}
               />
               <button
@@ -123,9 +123,9 @@ function CadastroProfissional() {
             <div className={styles.passwordWrapper}>
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
-                name="confirmarSenha"
+                name="confirmarSenhaUser"
                 className={styles.input}
-                value={formData.confirmarSenha}
+                value={formData.confirmarSenhaUser}
                 onChange={handleChange}
               />
               <button
@@ -140,18 +140,18 @@ function CadastroProfissional() {
             <label className={styles.label}>Profissão / Especialidade</label>
             <input
               type="text"
-              name="profissao"
+              name="job"
               className={styles.input}
-              value={formData.profissao}
+              value={formData.job}
               onChange={handleChange}
             />
 
             <label className={styles.label}>Registro profissional (CRM, etc.)</label>
             <input
               type="text"
-              name="registro"
+              name="register"
               className={styles.input}
-              value={formData.registro}
+              value={formData.register}
               onChange={handleChange}
             />
 
