@@ -34,7 +34,7 @@ function CadastroMae() {
       return;
     }
        try {
-         const res = await fetch(`backend-acenis-production.up.railway.app/usuarios`, {
+         const res = await fetch(`mae/backend-acenis-production.up.railway.app/usuarios`, {
            method: 'POST',
            headers: {'Content-Type': 'application/json'},
            body: JSON.stringify(formData),
