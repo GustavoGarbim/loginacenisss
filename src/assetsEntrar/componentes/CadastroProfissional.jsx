@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import styles from '../css/CadastroProfissional.module.css'; // Supondo que você tenha um CSS para este componente
-import fundocadastro from '../images/fundoprofissional.png'; // Supondo que você tenha uma imagem para este componente
-import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import styles from '../css/CadastroProfissional.module.css'
+import fundoprofissional from '../images/fundoprofissional.png'
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
+import { Link, useNavigate } from 'react-router-dom'
 
 function CadastroProfissional() {
   const [showPassword, setShowPassword] = useState(false);
