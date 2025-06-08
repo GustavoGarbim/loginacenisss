@@ -21,7 +21,7 @@ function PerfilCadastro() {
           <p className={styles.cardText}>
             Acesso rápido para mães que buscam apoio, informações e serviços para seus filhos.
           </p>
-       <Link to="/cadastro/" className={styles.buttonMae}> <p>CRIAR CONTA</p> </Link>   
+       <Link to="/cadastro/mae" className={styles.buttonMae}> <p>CRIAR CONTA</p> </Link>   
         </div>
 
 
@@ -31,7 +31,7 @@ function PerfilCadastro() {
           <p className={styles.cardText}>
             Aqui você já deixa tudo pronto para oferecer seus serviços e ajudar famílias.
           </p>
-     <Link to="/cadastro/" className={styles.buttonProfissional}>    <p> CRIAR CONTA </p> </Link> 
+     <Link to="/cadastro/profissional" className={styles.buttonProfissional}>    <p> CRIAR CONTA </p> </Link> 
         </div>
       </div>
     </div>
