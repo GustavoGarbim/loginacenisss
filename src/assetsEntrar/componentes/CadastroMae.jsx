@@ -12,7 +12,6 @@ function CadastroMae() {
        nameUser: '',
        emailUser: '',
        passwordUser: '',
-       confirmarSenhaUser: '',
        tipo: 'RESPONSAVEL' 
      });
    
@@ -40,7 +39,7 @@ function CadastroMae() {
 
     if (res.ok) {
       alert('Cadastro realizado com sucesso!');
-      setFormData({nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', tipo: 'RESPONSAVEL'});
+      setFormData({nameUser: '', emailUser: '', passwordUser: '', tipo: 'RESPONSAVEL'});
     } else {
       const errorData = await res.json();
       alert(`Erro no cadastro: ${errorData.message || res.statusText}`);
