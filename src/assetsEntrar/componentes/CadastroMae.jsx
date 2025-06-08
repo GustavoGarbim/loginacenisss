@@ -8,47 +8,72 @@ import { Link, useNavigate } from 'react-router-dom'
 function CadastroMae() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-   const [formData, setFormData] = useState({
-       nameUser: '',
-       emailUser: '',
-       passwordUser: '',
-       tipo: 'RESPONSAVEL' 
-     });
-   
-     const handleSubmit = async (e) => {
-  e.preventDefault();
+  const [formData, setFormData] = useState({
+    nameUser: '',
+    emailUser: '',
+    passwordUser: '',
+    confirmarSenhaUser: '',
+    tipo: 'RESPONSAVEL'
+  });
 
-  if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser) {
-    alert('Por favor, preencha todos os campos.');
-    return;
-  }
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-  if (formData.passwordUser !== formData.confirmarSenhaUser) {
-    alert('As senhas não coincidem.');
-    return;
-  }
+  // --- FUNÇÃO DE ENVIO TOTALMENTE CORRIGIDA ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  try {
-    const apiUrl = 'https://backend-acenis-production.up.railway.app/usuarios';
+    console.log("PASSO 1: Função handleSubmit foi chamada. Dados do formulário:", formData);
 
-    const res = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(formData),
-    });
-
-    if (res.ok) {
-      alert('Cadastro realizado com sucesso!');
-      setFormData({nameUser: '', emailUser: '', passwordUser: '', tipo: 'RESPONSAVEL'});
-    } else {
-      const errorData = await res.json();
-      alert(`Erro no cadastro: ${errorData.message || res.statusText}`);
+    // 1. Verificação de campos vazios
+    if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
     }
-  } catch (error) {
-    alert('Erro na conexão com a API. Verifique seu console (F12).');
-    console.error("Erro no fetch:", error);
-  }
-};
+
+    // 2. Verificação se as senhas coincidem (usando os nomes corretos)
+    if (formData.passwordUser !== formData.confirmarSenhaUser) {
+      alert('As senhas não coincidem.');
+      return;
+    }
+
+    // 3. Criação do objeto para a API (enviando SÓ o que o backend precisa)
+    const dadosParaAPI = {
+      nameUser: formData.nameUser,
+      emailUser: formData.emailUser,
+      passwordUser: formData.passwordUser,
+      tipo: formData.tipo
+      // Note que 'confirmarSenhaUser' não é enviado
+    };
+
+    console.log("PASSO 2: Preparando para enviar estes dados para a API:", dadosParaAPI);
+
+    try {
+      // 4. URL da API (absoluta, começando com https://)
+      const apiUrl = 'https://backend-acenis-production.up.railway.app/usuarios';
+
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosParaAPI),
+      });
+      
+      console.log("PASSO 3: Resposta da API recebida com status:", res.status);
+
+      if (res.ok) {
+        alert('Cadastro realizado com sucesso!');
+        setFormData({ nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', tipo: 'RESPONSAVEL' });
+      } else {
+        // Tenta pegar uma mensagem de erro mais específica do backend
+        const errorData = await res.json();
+        alert(`Erro no cadastro: ${errorData.message || `Ocorreu um erro (Status: ${res.status})`}`);
+      }
+    } catch (error) {
+      alert('Erro de conexão com a API. Verifique o console para mais detalhes.');
+      console.error("Erro na chamada fetch:", error);
+    }
+  };
 
   return (
     <div className={styles.paginaCadastro}>
