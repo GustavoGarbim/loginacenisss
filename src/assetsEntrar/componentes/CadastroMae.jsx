@@ -33,9 +33,8 @@ function CadastroMae() {
       alert('As senhas não coincidem.');
       return;
     }
-    
        try {
-         const res = await fetch('http://localhost:8081/usuarios', {
+         const res = await fetch(`backend-acenis-production.up.railway.app/usuarios`, {
            method: 'POST',
            headers: {'Content-Type': 'application/json'},
            body: JSON.stringify(formData),
