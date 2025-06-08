@@ -16,39 +16,40 @@ function CadastroMae() {
        tipo: 'RESPONSAVEL' 
      });
    
-     const handleChange = (e) => {
-       setFormData({...formData, [e.target.name]: e.target.value});
-     };
-   
      const handleSubmit = async (e) => {
-       e.preventDefault();
+  e.preventDefault();
 
-       
-    if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser) {
-      alert('Por favor, preencha todos os campos.');
-      return;
-    }
+  if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser) {
+    alert('Por favor, preencha todos os campos.');
+    return;
+  }
 
-    if (formData.senha !== formData.confirmarSenha) {
-      alert('As senhas não coincidem.');
-      return;
+  if (formData.passwordUser !== formData.confirmarSenhaUser) {
+    alert('As senhas não coincidem.');
+    return;
+  }
+
+  try {
+    const apiUrl = 'https://backend-acenis-production.up.railway.app/usuarios';
+
+    const res = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(formData),
+    });
+
+    if (res.ok) {
+      alert('Cadastro realizado com sucesso!');
+      setFormData({nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', tipo: 'RESPONSAVEL'});
+    } else {
+      const errorData = await res.json();
+      alert(`Erro no cadastro: ${errorData.message || res.statusText}`);
     }
-       try {
-         const res = await fetch(`/backend-acenis-production.up.railway.app/usuarios`, {
-           method: 'POST',
-           headers: {'Content-Type': 'application/json'},
-           body: JSON.stringify(formData),
-         });
-         if(res.ok) {
-           alert('Cadastro realizado com sucesso!');
-           setFormData({nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', tipo: 'RESPONSAVEL'});
-         } else {
-           alert('Erro no cadastro.');
-         }
-       } catch (error) {
-         alert('Erro na conexão com a API.');
-       }
-     };
+  } catch (error) {
+    alert('Erro na conexão com a API. Verifique seu console (F12).');
+    console.error("Erro no fetch:", error);
+  }
+};
 
   return (
     <div className={styles.paginaCadastro}>
