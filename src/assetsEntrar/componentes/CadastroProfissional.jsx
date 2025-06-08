@@ -1,13 +1,14 @@
-import React, { useState } from 'react'
-import styles from '../css/CadastroProfissional.module.css'
-import fundoprofissional from '../images/fundoprofissional.png'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react';
+import styles from '../css/CadastroProfissional.module.css'; // Supondo que você tenha um CSS para este componente
+import fundocadastro from '../images/fundoprofissional.png'; // Supondo que você tenha uma imagem para este componente
+import { FaGoogle, FaFacebook, FaApple } from 'react-icons/fa';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { Link, useNavigate } from 'react-router-dom';
 
 function CadastroProfissional() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-   const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState({
     nameUser: '',
     emailUser: '',
     passwordUser: '',
@@ -18,36 +19,62 @@ function CadastroProfissional() {
   });
 
   const handleChange = (e) => {
-    setFormData({...formData, [e.target.name]: e.target.value});
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  // --- FUNÇÃO DE ENVIO TOTALMENTE CORRIGIDA E ADAPTADA ---
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser) {
-      alert('Por favor, preencha todos os campos.');
+    console.log("PASSO 1: Função handleSubmit (Profissional) foi chamada. Dados do formulário:", formData);
+
+    // 1. Verificação de campos vazios, incluindo os de profissional
+    if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser || !formData.job || !formData.register) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
+    // 2. Verificação se as senhas coincidem
     if (formData.passwordUser !== formData.confirmarSenhaUser) {
       alert('As senhas não coincidem.');
       return;
-}
-    
+    }
+
+    // 3. Criação do objeto para a API (enviando SÓ o que o backend precisa)
+    const dadosParaAPI = {
+      nameUser: formData.nameUser,
+      emailUser: formData.emailUser,
+      passwordUser: formData.passwordUser,
+      job: formData.job,
+      register: formData.register,
+      tipo: formData.tipo
+    };
+
+    console.log("PASSO 2: Preparando para enviar estes dados para a API:", dadosParaAPI);
+
     try {
-      const res = await fetch(`/backend-acenis-production.up.railway.app/usuarios`, {
+      // 4. URL da API (absoluta e correta)
+      const apiUrl = 'https://backend-acenis-production.up.railway.app/usuarios';
+
+      const res = await fetch(apiUrl, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(dadosParaAPI),
       });
-      if(res.ok) {
-        alert('Cadastro realizado com sucesso!');
-        setFormData({nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', job: '', register: '', tipo: 'PROFISSIONAL'});
+
+      console.log("PASSO 3: Resposta da API recebida com status:", res.status);
+
+      if (res.ok) {
+        alert('Cadastro de profissional realizado com sucesso!');
+        // Limpa todos os campos do formulário
+        setFormData({ nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', job: '', register: '', tipo: 'PROFISSIONAL' });
       } else {
-        alert('Erro no cadastro.');
+        const errorData = await res.json();
+        alert(`Erro no cadastro: ${errorData.message || `Ocorreu um erro (Status: ${res.status})`}`);
       }
     } catch (error) {
-      alert('Erro na conexão com a API.');
+      alert('Erro de conexão com a API. Verifique o console para mais detalhes.');
+      console.error("Erro na chamada fetch:", error);
     }
   };
 
