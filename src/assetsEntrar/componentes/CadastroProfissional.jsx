@@ -21,25 +21,21 @@ function CadastroProfissional() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // --- FUNÇÃO DE ENVIO TOTALMENTE CORRIGIDA E ADAPTADA ---
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     console.log("PASSO 1: Função handleSubmit (Profissional) foi chamada. Dados do formulário:", formData);
 
-    // 1. Verificação de campos vazios, incluindo os de profissional
     if (!formData.nameUser || !formData.emailUser || !formData.passwordUser || !formData.confirmarSenhaUser || !formData.job || !formData.register) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
 
-    // 2. Verificação se as senhas coincidem
     if (formData.passwordUser !== formData.confirmarSenhaUser) {
       alert('As senhas não coincidem.');
       return;
     }
 
-    // 3. Criação do objeto para a API (enviando SÓ o que o backend precisa)
     const dadosParaAPI = {
       nameUser: formData.nameUser,
       emailUser: formData.emailUser,
@@ -52,7 +48,6 @@ function CadastroProfissional() {
     console.log("PASSO 2: Preparando para enviar estes dados para a API:", dadosParaAPI);
 
     try {
-      // 4. URL da API (absoluta e correta)
       const apiUrl = 'https://backend-acenis-production.up.railway.app/usuarios';
 
       const res = await fetch(apiUrl, {
@@ -65,7 +60,6 @@ function CadastroProfissional() {
 
       if (res.ok) {
         alert('Cadastro de profissional realizado com sucesso!');
-        // Limpa todos os campos do formulário
         setFormData({ nameUser: '', emailUser: '', passwordUser: '', confirmarSenhaUser: '', job: '', register: '', tipo: 'PROFISSIONAL' });
       } else {
         const errorData = await res.json();
