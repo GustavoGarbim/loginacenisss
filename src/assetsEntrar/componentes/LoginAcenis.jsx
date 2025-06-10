@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
-import styles from '../css/LoginAcenis.module.css'
-import fundologin from '../images/fotologin.jpg'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import styles from '../css/LoginAcenis.module.css';
+import fundologin from '../images/fotologin.jpg';
 
 function LoginAcenis() {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,9 +11,47 @@ function LoginAcenis() {
   const [password, setPassword] = useState('');
   const [recoveryEmail, setRecoveryEmail] = useState('');
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login:', { email, password });
+
+    if (!email || !password) {
+      alert('Por favor, preencha o e-mail e a senha.');
+      return;
+    }
+
+    const loginData = {
+      email: email,
+      senha: password,
+    };
+
+    try {
+      const apiUrl = 'https://backend-acenis-production.up.railway.app/auth/login';
+
+      const res = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(loginData),
+      });
+
+      if (res.ok) {
+        const userData = await res.json();
+        alert(`Bem-vindo(a) de volta, ${userData.nome}!`);
+
+        // Opcional: Salvar dados do usuário no localStorage para usar em outras páginas
+        // localStorage.setItem('user', JSON.stringify(userData));
+
+        navigate('/home'); //TODO Alterar '/home' para a rota da página principal
+
+      } else {
+        const errorMessage = await res.text();
+        alert(`Falha no login: ${errorMessage}`);
+      }
+    } catch (error) {
+      alert('Erro de conexão com a API. Verifique o console.');
+      console.error("Erro na chamada fetch:", error);
+    }
   };
 
   const handleRecovery = (e) => {
@@ -27,10 +65,10 @@ function LoginAcenis() {
   return (
     <div className={styles.paginalogin}>
       <div className={styles.leftSection}>
-        <img 
-          src={fundologin} 
-          alt="Criança brincando" 
-          className={styles.imagelogin} 
+        <img
+          src={fundologin}
+          alt="Criança brincando"
+          className={styles.imagelogin}
         />
       </div>
 
@@ -89,7 +127,6 @@ function LoginAcenis() {
         </form>
       </div>
 
-
       {showForgotPassword && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>
@@ -115,7 +152,6 @@ function LoginAcenis() {
                 <button type="submit" className={styles.loginButton}>
                   Enviar
                 </button>
-
               </div>
             </form>
           </div>
@@ -125,4 +161,4 @@ function LoginAcenis() {
   );
 }
 
-export default LoginAcenis
+export default LoginAcenis;
